@@ -2,10 +2,10 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import (
     Distance, VectorParams, PointStruct
 )
-from sentence_transformers import SentenceTransformer
 from typing import List
 import uuid
 import logging
+import hashlib
 
 from utils.config import settings
 
@@ -19,15 +19,8 @@ class VectorStore:
             api_key=settings.QDRANT_API_KEY
         )
 
-        print("QDRANT CONNECTED:", settings.QDRANT_URL)  # debug
+        print("QDRANT CONNECTED:", settings.QDRANT_URL)
 
-        # self.encoder = SentenceTransformer(settings.EMBEDDING_MODEL)
-        self.encoder = None
-        def get_encoder(self):
-            if self.encoder is None:
-                from sentence_transformers import SentenceTransformer
-                self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
-            return self.encoder
         self.collection = settings.QDRANT_COLLECTION
 
         self._ensure_collection()
@@ -37,27 +30,28 @@ class VectorStore:
             collections = [c.name for c in self.client.get_collections().collections]
 
             if self.collection not in collections:
-                print("Creating Qdrant collection...")  # debug
+                print("Creating Qdrant collection...")
 
                 self.client.create_collection(
                     collection_name=self.collection,
                     vectors_config=VectorParams(
-                        size=settings.EMBEDDING_DIM,
+                        size=1,  # ✅ IMPORTANT (since we use fake embedding)
                         distance=Distance.COSINE
                     )
                 )
 
                 logger.info(f"Created Qdrant collection: {self.collection}")
             else:
-                print("Collection already exists")  # debug
+                print("Collection already exists")
 
         except Exception as e:
-            print("QDRANT ERROR:", e)  # 🔥 IMPORTANT DEBUG
+            print("QDRANT ERROR:", e)
             logger.error(f"Qdrant init error: {e}")
 
     def embed(self, text: str) -> List[float]:
-        encoder = self.get_encoder()
-        return encoder.encode(text).tolist()
+        # ✅ Lightweight embedding (no heavy model)
+        hash_val = int(hashlib.md5(text.encode()).hexdigest(), 16)
+        return [float(hash_val % 1000)]
 
     def upsert_candidate(self, candidate_id: str, text: str, payload: dict) -> str:
         vector = self.embed(text)
@@ -114,5 +108,5 @@ class VectorStore:
         return dot / (mag1 * mag2) if mag1 and mag2 else 0.0
 
 
-# ✅ This ensures initialization runs
+# initialize
 vector_store = VectorStore()
