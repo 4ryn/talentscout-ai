@@ -17,6 +17,10 @@
 
 ---
 
+## LIVE_URL: https://talentscout-ai-hv6m.vercel.app/
+
+---
+
 ## 🏗 Architecture
 
 ```
