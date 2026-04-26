@@ -233,19 +233,6 @@ talentscout-ai/
 
 ---
 
-## 🎥 Demo Script
-
-1. **Open Dashboard** — show stats (0 jobs, 0 candidates)
-2. **Go to Upload** — drop a Software Engineer JD (PDF)
-3. **Drop 5+ resumes** — mix of matching and non-matching profiles
-4. **Click "Launch AI Pipeline"** — watch the live log
-5. **Results page loads** — show ranked table with scores
-6. **Click Rank #1** — open modal: scores, skills, missing skills, conversation, explanation
-7. **Switch to Chart view** — visual score comparison
-8. **Reset System** — confirm dialog, data clears, stats reset to 0
-
----
-
 ## 🛠 Tech Stack
 
 | Layer | Technology |
