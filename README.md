@@ -55,6 +55,29 @@
 └─────────────────────────────────────────────────────────┘
 ```
 
+
+# 🔍 Key Components
+
+- **JD Parser Agent**  
+  Extracts structured information like role, skills, experience, and keywords.
+
+- **Retrieval Agent (Qdrant)**  
+  Performs semantic search to fetch the most relevant candidates.
+
+- **Processing Agents (Parallel)**  
+  - **Match Agent** → evaluates skill & experience alignment  
+  - **Engagement Agent** → simulates recruiter-candidate conversation  
+  - **Interest Agent** → estimates candidate interest and intent  
+
+- **Ranking Agent**  
+  Computes final score using weighted scoring and applies shortlist threshold.
+
+- **Explainability Agent**  
+  Generates recruiter-friendly explanations for each candidate.
+
+
+The full system architecture is available in the repository: 
+# talentscout_architecture_diagram.svg
 ---
 
 ## 🧮 Scoring Logic
@@ -76,7 +99,6 @@ Derived from LLM analysis of simulated conversation:
 ```
 final = 0.7 × match_score + 0.3 × interest_score
 ```
-
 ---
 
 ## 🚀 Quick Start (Local)
@@ -268,6 +290,65 @@ INTEREST_WEIGHT=0.3
 
 ---
 
-## 📄 License
+# 🧪 Sample Input & Output
 
+---
+
+## 📥 Sample Input
+
+### Job Description
+
+```text
+Role: Backend Engineer
+Skills: Python, FastAPI, PostgreSQL, Docker
+Experience: 2+ years
+
+Candidates:
+
+Candidate 1
+Name: John Doe
+Skills: Python, FastAPI, SQL
+Experience: 3 years
+
+Candidate 2
+Name: Alice Smith
+Skills: Java, Spring Boot, MySQL
+Experience: 4 years
+```
+## 📤 Sample Output
+Ranked Candidates
+{
+  "ranked_results": [
+    {
+      "name": "John Doe",
+      "match_score": 0.85,
+      "interest_score": 0.75,
+      "final_score": 0.82,
+      "missing_skills": ["Docker"],
+      "full_explanation": "Strong backend experience with Python and FastAPI. Minor gap in Docker."
+    },
+    {
+      "name": "Alice Smith",
+      "match_score": 0.55,
+      "interest_score": 0.60,
+      "final_score": 0.57,
+      "missing_skills": ["Python", "FastAPI"],
+      "full_explanation": "Good backend experience but lacks required Python stack."
+    }
+  ]
+}
+Shortlisted Candidates (Threshold = 0.6)
+{
+  "shortlisted": [
+    {
+      "name": "John Doe",
+      "final_score": 0.82
+    }
+  ],
+  "total_candidates": 2,
+  "shortlisted_count": 1
+}
+
+
+## 📄 License
 MIT — use freely, attribution appreciated.
