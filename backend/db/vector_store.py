@@ -21,7 +21,13 @@ class VectorStore:
 
         print("QDRANT CONNECTED:", settings.QDRANT_URL)  # debug
 
-        self.encoder = SentenceTransformer(settings.EMBEDDING_MODEL)
+        # self.encoder = SentenceTransformer(settings.EMBEDDING_MODEL)
+        self.encoder = None
+        def get_encoder(self):
+            if self.encoder is None:
+                from sentence_transformers import SentenceTransformer
+                self.encoder = SentenceTransformer("all-MiniLM-L6-v2")
+            return self.encoder
         self.collection = settings.QDRANT_COLLECTION
 
         self._ensure_collection()
@@ -50,7 +56,8 @@ class VectorStore:
             logger.error(f"Qdrant init error: {e}")
 
     def embed(self, text: str) -> List[float]:
-        return self.encoder.encode(text).tolist()
+        encoder = self.get_encoder()
+        return encoder.encode(text).tolist()
 
     def upsert_candidate(self, candidate_id: str, text: str, payload: dict) -> str:
         vector = self.embed(text)
