@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE = import.meta.env.VITE_API_URL || '/api'
+const BASE = 'https://talentscout-ai-5p49.onrender.com'
 
 const api = axios.create({
   baseURL: BASE,
