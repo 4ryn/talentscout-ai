@@ -316,7 +316,8 @@ Skills: Java, Spring Boot, MySQL
 Experience: 4 years
 ```
 ## 📤 Sample Output
-Ranked Candidates
+
+```json
 {
   "ranked_results": [
     {
@@ -348,7 +349,6 @@ Shortlisted Candidates (Threshold = 0.6)
   "total_candidates": 2,
   "shortlisted_count": 1
 }
-
-
+```
 ## 📄 License
 MIT — use freely, attribution appreciated.
