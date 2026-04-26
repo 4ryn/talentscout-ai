@@ -54,6 +54,7 @@ class VectorStore:
         return [float(hash_val % 1000)]
 
     def upsert_candidate(self, candidate_id: str, text: str, payload: dict) -> str:
+        self._ensure_collection()
         vector = self.embed(text)
         point_id = str(uuid.uuid4())
 
@@ -71,6 +72,7 @@ class VectorStore:
         return point_id
 
     def search_candidates(self, query_text: str, top_k: int = 10) -> List[dict]:
+        self._ensure_collection()
         vector = self.embed(query_text)
 
         results = self.client.search(
