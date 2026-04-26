@@ -14,16 +14,16 @@ class Settings(BaseSettings):
     # PostgreSQL
     DATABASE_URL: str = ""
 
-    # Qdrant
-    QDRANT_HOST: str = "localhost"
-    QDRANT_PORT: int = 6333
+    # Qdrant (Cloud only)
+    QDRANT_URL: str
+    QDRANT_API_KEY: str
     QDRANT_COLLECTION: str = "candidates"
-    QDRANT_URL: Optional[str] = None  # Full URL for Qdrant Cloud
-    QDRANT_API_KEY: Optional[str] = None  # API Key for Qdrant Cloud
+
+    
 
     # Embedding
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
-    EMBEDDING_DIM: int = 384
+    EMBEDDING_DIM: int = 1
 
     # Pipeline
     TOP_K_CANDIDATES: int = 10
