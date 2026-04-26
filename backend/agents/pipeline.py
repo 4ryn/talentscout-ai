@@ -59,21 +59,33 @@ async def run_pipeline(
     """Execute the full talent scouting pipeline."""
 
     initial_state: AgentState = {
-        "job_id": job_id,
-        "jd_text": jd_text,
-        "candidate_ids": [],
-        "parsed_jd": None,
-        "retrieved_candidates": [],
-        "candidate_results": [],
-        "ranked_results": [],
-        "errors": [],
-        "pipeline_status": "starting"
-    }
+    "job_id": job_id,
+    "jd_text": jd_text,
+    "candidate_ids": [],
+    "parsed_jd": None,
+    "retrieved_candidates": [],
+    "candidate_results": [],
+    "ranked_results": [],
+    "shortlisted": [], 
+    "errors": [],
+    "pipeline_status": "starting"
+}
 
     pipeline = build_pipeline(db)
 
     logger.info(f"Starting pipeline for job_id={job_id}")
     final_state = await pipeline.ainvoke(initial_state)
-    logger.info(f"Pipeline complete: {len(final_state['ranked_results'])} candidates ranked")
 
-    return final_state
+    ranked = final_state.get("ranked_results", [])
+    shortlisted = final_state.get("shortlisted", [])
+
+    logger.info(
+        f"Pipeline complete: {len(ranked)} ranked, {len(shortlisted)} shortlisted"
+    )
+
+    return {
+        "ranked_results": ranked,
+        "shortlisted": shortlisted,
+        "total_candidates": len(ranked),
+        "shortlisted_count": len(shortlisted),
+    }

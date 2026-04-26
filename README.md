@@ -258,7 +258,6 @@ DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/talentscout
 QDRANT_HOST=localhost
 QDRANT_PORT=6333
 GROQ_MODEL=llama3-70b-8192
-TOP_K_CANDIDATES=10
 MATCH_WEIGHT=0.7
 INTEREST_WEIGHT=0.3
 ```

@@ -26,7 +26,6 @@ class Settings(BaseSettings):
     EMBEDDING_DIM: int = 1
 
     # Pipeline
-    TOP_K_CANDIDATES: int = 10
     MATCH_WEIGHT: float = 0.7
     INTEREST_WEIGHT: float = 0.3
 

@@ -35,6 +35,7 @@ class AgentState(TypedDict):
 
     # Final ranked output
     ranked_results: List[CandidateResult]
+    shortlisted: List[CandidateResult] 
 
     # Error tracking
     errors: List[str]
